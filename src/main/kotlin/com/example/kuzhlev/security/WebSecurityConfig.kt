@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import javax.servlet.annotation.WebServlet
 import javax.sql.DataSource
 
-@Suppress("DEPRECATION")
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

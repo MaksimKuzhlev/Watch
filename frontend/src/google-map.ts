@@ -4,7 +4,7 @@ class GoogleMap extends LitElement {
 
     render() {
         return html`
-            <div id = "map"></div>
+            <div id = "map" style='height:300px; width:300px;'></div>
             <script>
                  function initMap(){
                   map = new google.maps.Map(document.getElementById("map"),{center: { lat:51.21, lng:-0.129761 },zoom: 17});

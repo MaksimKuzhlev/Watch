@@ -94,7 +94,6 @@ class CreateUserForm( private val watchEntity:List<String>,private val userRepos
         save.addClickListener {
             service.save(binder,userEntity,notification,changeHandler,check)
             check = 0
-            println(check)
         }
         delete.addClickListener { service.delete(userEntity,changeHandler) }
         close.addClickListener {  isVisible=false }
@@ -113,8 +112,7 @@ class CreateUserForm( private val watchEntity:List<String>,private val userRepos
         val persisted = c.id.toInt() != 0
         if (persisted) {
             userEntity =  userRepository.findById(c.id).get()
-           check = 1
-            println(check)
+            check = 1
         }
         else {
             userEntity = c

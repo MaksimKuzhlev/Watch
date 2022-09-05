@@ -25,7 +25,7 @@ class MainLayout(@Autowired private val securityService: SecurityService, privat
 
     init {
         createHeader()
-           createDraw()
+        createDraw()
 
 
     }
@@ -51,12 +51,12 @@ class MainLayout(@Autowired private val securityService: SecurityService, privat
 
     private fun createDraw() {
         if(webSecurityConfig.userDetailsServiceBean().loadUserByUsername(auth.name).authorities.toString() == "[ROLE_ADMIN]"){
-            val listLink = RouterLink("Grid", GridView::class.java)
+            val listLink = RouterLink("Watches Data", GridView::class.java)
             listLink.highlightCondition = HighlightConditions.sameLocation()
             addToDrawer(
                 VerticalLayout(
                     listLink,
-                    RouterLink("User", UserView::class.java)
+                    RouterLink("Users", UserView::class.java),
 
                 )
             )

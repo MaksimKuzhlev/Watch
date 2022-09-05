@@ -2,6 +2,8 @@
   "name": "no-name",
   "license": "UNLICENSED",
   "dependencies": {
+    "@flowingcode/google-map": "3.2.1",
+    "@googlemaps/markerclusterer": "2.0.8",
     "@polymer/iron-icon": "3.0.1",
     "@polymer/iron-iconset-svg": "3.0.1",
     "@polymer/iron-list": "3.1.0",
@@ -129,6 +131,8 @@
   },
   "vaadin": {
     "dependencies": {
+      "@flowingcode/google-map": "3.2.1",
+      "@googlemaps/markerclusterer": "2.0.8",
       "@polymer/iron-icon": "3.0.1",
       "@polymer/iron-iconset-svg": "3.0.1",
       "@polymer/iron-list": "3.1.0",
@@ -253,7 +257,7 @@
       "workbox-precaching": "6.5.0",
       "workbox-webpack-plugin": "6.5.0"
     },
-    "hash": "2805609a466b33bca515320448620376e539b9db45de8c838de7764a621e7d4e"
+    "hash": "450d69ba0a864f5ff1dc19e3207185617ce027c37d3206708fef99d1c5b2c4b0"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -356,6 +360,8 @@
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
     "chokidar": "$chokidar",
-    "date-fns": "$date-fns"
+    "date-fns": "$date-fns",
+    "@flowingcode/google-map": "$@flowingcode/google-map",
+    "@googlemaps/markerclusterer": "$@googlemaps/markerclusterer"
   }
 }

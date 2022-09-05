@@ -10,12 +10,13 @@ class WatchEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-    var token:String,
-    var longitude: Float,
-    var latitude:Float,
+    var token: String,
+    var longitude: Double,
+    var latitude: Double,
     var masturbate:Boolean,
     var heart_rate: Int,
     var has_fallen:Boolean,
     var charge_level:Int,
-    var network_level:Int
+    var network_level:Int,
+
 )

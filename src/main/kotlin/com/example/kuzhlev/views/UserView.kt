@@ -70,9 +70,10 @@ class UserView(private val service:UserService,userEntity: UserEntity,userReposi
     private fun getToolBar():HorizontalLayout{
 
         val addContactButton = Button("Add contact")
-        addContactButton.addClickListener {form.isVisible = true
-                form.editPeople(UserEntity(0,"","","","","","",true))
-            }
+        addContactButton.addClickListener {
+            form.editPeople(UserEntity(0,"","","","","","",true))
+            form.isVisible = true
+        }
         val toolBar = HorizontalLayout(addContactButton)
         toolBar.addClassName("toolbar")
         return toolBar
