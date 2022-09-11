@@ -17,7 +17,7 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 class WebSecurityConfig (@Autowired private val dataSource: DataSource) : VaadinWebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)

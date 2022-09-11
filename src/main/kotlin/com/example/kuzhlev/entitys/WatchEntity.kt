@@ -1,5 +1,6 @@
 package com.example.kuzhlev.entitys
 
+import com.vaadin.flow.function.SerializableFunction
 import org.springframework.stereotype.Component
 import javax.persistence.*
 

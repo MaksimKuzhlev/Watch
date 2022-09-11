@@ -5,6 +5,9 @@ spring:
     driverClassName: org.postgresql.Driver
     username: postgres
     password: postgres
+#liquibase
+  liquibase:
+    change-log: classpath:liquibase/changelog.yml
   #jpa
   jpa:
     show-sql: true
@@ -15,3 +18,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
   temp:
     use_jdbc_metadata_defaults: false
+

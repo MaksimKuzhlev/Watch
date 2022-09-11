@@ -11,8 +11,8 @@ interface WatchService {
     fun findAllWatches():List<WatchEntity>
     //fun create(watch: WatchEntity)
     fun update(watch:WatchEntity)
-    fun save(binder: BeanValidationBinder<WatchEntity>, changeHandler: CreateWatchForm.ChangeHandler?)
-    fun delete(changeHandler: CreateWatchForm.ChangeHandler?)
+    fun save(watchEntity: WatchEntity, changeHandler: CreateWatchForm.ChangeHandler?)
+    fun delete(watchEntity: WatchEntity,changeHandler: CreateWatchForm.ChangeHandler?)
     fun check(token: Token):Boolean
 
     fun create(positionHistoryEntity: PositionHistoryEntity)

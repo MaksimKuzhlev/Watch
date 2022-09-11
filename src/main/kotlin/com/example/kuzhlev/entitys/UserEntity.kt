@@ -15,6 +15,6 @@ class UserEntity(
     var token:String?,
     var username:String,
     var password:String,
-    var role: String?,
+    var role: String,
     var active:Boolean
         )

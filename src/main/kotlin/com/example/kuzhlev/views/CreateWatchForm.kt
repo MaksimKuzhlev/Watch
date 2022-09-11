@@ -6,17 +6,27 @@ import com.example.kuzhlev.repositories.WatchRepository
 import com.example.kuzhlev.services.WatchService
 import com.flowingcode.vaadin.addons.googlemaps.GoogleMap
 import com.flowingcode.vaadin.addons.googlemaps.LatLon
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.Key
+import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.formlayout.FormLayout
+import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.icon.Icon
+import com.vaadin.flow.component.notification.NotificationVariant
+import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.BeanValidationBinder
+import com.vaadin.flow.server.VaadinSession
+import com.vaadin.flow.server.WrappedHttpSession
+import com.vaadin.flow.server.WrappedSession
 import com.vaadin.flow.spring.annotation.SpringComponent
 import com.vaadin.flow.spring.annotation.UIScope
+
 
 
 @SpringComponent
@@ -26,14 +36,17 @@ final class CreateWatchForm(private val service:WatchService,
                             private val watchRepo:WatchRepository,
                             private val positionRepository: PositionRepository):FormLayout() {
     private val token = TextField("Token")
-    var save = Button("Save")
-    var delete = Button("Delete")
-    var close = Button("Close")
+    private var save = Button("Save")
+    private var delete = Button("Delete")
+    private var close = Button("Close")
+    private val closeButton = Button(Icon("lumo", "cross"))
+    private val text = Div(Text("Failed to create watch"))
     var checkPosition = Button("Check Position on Map")
     var checkMoving = Button("Check Moving on Map")
-    val dialog = Dialog()
+    private val dialog = Dialog()
     private val binder = BeanValidationBinder(WatchEntity::class.java)
     private var changeHandler: ChangeHandler?=null
+    private val notifError = Notification()
     private val gmaps = GoogleMap("AIzaSyC7Q3-PD4pYBdAlDx9O_gxFAEUewPVGOeE", null,null)
     interface ChangeHandler {
         fun onChange(){}
@@ -41,6 +54,7 @@ final class CreateWatchForm(private val service:WatchService,
 
     init{
         addClassName("contact-form")
+        createNotification()
         configDialog()
         configMap()
         add(
@@ -65,12 +79,14 @@ final class CreateWatchForm(private val service:WatchService,
         checkPosition.addClickShortcut(Key.ESCAPE)
 
         save.addClickListener {
-           if(!token.isEmpty)
-               service.save(binder,changeHandler)
-           TODO("Notification")
-
+           if(!token.isEmpty){
+               binder.writeBean(watchEntity)
+               service.save(watchEntity,changeHandler)
+           }
+           else
+               notifError.open()
         }
-        delete.addClickListener {  service.delete(changeHandler) }
+        delete.addClickListener {  service.delete(watchEntity,changeHandler) }
         close.addClickListener { isVisible=false }
 
         checkPosition.addClickListener { gmaps.center = LatLon(binder.bean.latitude,binder.bean.longitude)
@@ -123,7 +139,7 @@ final class CreateWatchForm(private val service:WatchService,
         changeHandler = h
     }
 
-    fun configDialog(){
+    private fun configDialog(){
         dialog.setSizeFull()
         dialog.headerTitle = "Map"
         val dialogLayout = configMap()
@@ -139,6 +155,20 @@ final class CreateWatchForm(private val service:WatchService,
         gmaps.mapType = GoogleMap.MapType.ROADMAP
         gmaps.setSizeFull()
         return gmaps
+    }
+
+    private fun  createNotification(){
+        notifError.addThemeVariants(NotificationVariant.LUMO_ERROR)
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE)
+
+        closeButton.element.setAttribute("aria-label", "Close")
+
+        closeButton.addClickListener { notifError.close() }
+
+        val layout = HorizontalLayout(text, closeButton)
+        layout.alignItems = FlexComponent.Alignment.CENTER
+        notifError.add(layout)
+
     }
 
 }

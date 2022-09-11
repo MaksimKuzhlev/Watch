@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
+import com.vaadin.flow.server.VaadinSession
 import javax.annotation.security.RolesAllowed
 
 
@@ -30,6 +31,7 @@ class UserView(private val service:UserService,userEntity: UserEntity,userReposi
             }
         })
         updateList()
+
     }
 
     fun confGrid(){

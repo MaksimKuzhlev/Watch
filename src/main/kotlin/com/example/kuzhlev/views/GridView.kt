@@ -5,37 +5,50 @@ import com.example.kuzhlev.entitys.WatchEntity
 import com.example.kuzhlev.repositories.PositionRepository
 import com.example.kuzhlev.repositories.WatchRepository
 import com.example.kuzhlev.services.WatchService
+import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.Text
+import com.vaadin.flow.component.DetachEvent
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Div
-import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.notification.NotificationVariant
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.page.AppShellConfigurator
+import com.vaadin.flow.component.page.Push
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
-import com.vaadin.flow.spring.annotation.SpringComponent
+import com.vaadin.flow.server.VaadinSession
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import javax.annotation.security.RolesAllowed
 
-@Route(value = "watchData", layout = MainLayout::class)
+
+@Route(value = "", layout = MainLayout::class)
 @PageTitle("Watch")
 @RolesAllowed("ADMIN")
-class GridView(private val service: WatchService,
-                watchEntity: WatchEntity,
-                watchRepo:WatchRepository,
-                positionRepository: PositionRepository):VerticalLayout(){
-    private val grid: Grid<WatchEntity> = Grid(WatchEntity::class.java)
+@CssImport(
+    themeFor = "vaadin-grid",
+    value = "./themes/mytheme/components/dynamic-grid-cell-background-color.css"
+)
+class GridView(
+     val service: WatchService,
+    watchEntity: WatchEntity,
+    watchRepo: WatchRepository,
+    positionRepository: PositionRepository,
+):VerticalLayout() {
+    val grid: Grid<WatchEntity> = Grid(WatchEntity::class.java)
     private val form = CreateWatchForm(service,watchEntity, watchRepo,positionRepository)
-    private val notifSos = Notification()
-    private val text = Div()
-    private val closeButton: Button = Button()
+    val notifSos = Notification()
+    val text = Div()
+    val closeButton: Button = Button()
     private val sos:Sos =Sos(token = "0",sos = false)
+    private var thread: ApllServ.FeederThread? = null
+
 
     init {
         setSizeFull()
@@ -48,14 +61,11 @@ class GridView(private val service: WatchService,
                 updateList()
             }
         })
+
         updateList()
-        if (service.sosrq()){
-            text.text = "SOS token ${service.tokrq()}"
-            closeButton.text = "Resolved problem"
-            notifSos.open()
-        }
 
     }
+
 
 
 
@@ -67,7 +77,6 @@ class GridView(private val service: WatchService,
                         "token",
                         "longitude",
                         "latitude",
-                        "masturbate",
                         "heart_rate",
                         "has_fallen",
                         "charge_level",
@@ -96,6 +105,7 @@ class GridView(private val service: WatchService,
     private fun getToolBar():HorizontalLayout{
             val addContactButton = Button("Add contact")
             addContactButton.addClickListener {
+                form.editPeople(WatchEntity(0,"",0.0,0.0,false, 0,false,0,0))
                 form.checkPosition.isVisible = false
                 form.checkMoving.isVisible = false
                 form.isVisible = true
@@ -121,6 +131,7 @@ class GridView(private val service: WatchService,
 
         closeButton.addClickListener { notifSos.close()
             service.sos(sos)
+            grid.setClassNameGenerator { null }
         }
 
         val layout = VerticalLayout(text, closeButton)
@@ -128,9 +139,49 @@ class GridView(private val service: WatchService,
         notifSos.add(layout)
 
     }
+    override fun onAttach(attachEvent: AttachEvent) {
+        thread = ApllServ.FeederThread(attachEvent.ui, this)
+        thread!!.start()
+    }
+
+    override fun onDetach(detachEvent: DetachEvent) {
+        thread?.interrupt()
+        thread = null
+
+    }
+
+}
 
 
+@Push
+class ApllServ():SpringBootServletInitializer(),AppShellConfigurator {
+
+     class FeederThread(private val ui: UI, private val view: GridView) : Thread() {
+        private val l = 0
+        override fun run() {
+            while (l != 1) {
+                println("Scan")
+                if (view.service.sosrq()) {
+                    println("Попал")
+                    ui.access {
+                        println("Выполняю")
+                        view.text.text = "SOS token ${view.service.tokrq()}"
+                        view.closeButton.text = "Resolved problem"
+                        view.notifSos.open()
+                        view.grid.setClassNameGenerator {
+                            if (it.token == view.service.tokrq())
+                                "warn"
+                            else
+                                null
+                        }
+                    }
 
 
+                }
+                sleep(5000)
+            }
 
+        }
+
+    }
 }

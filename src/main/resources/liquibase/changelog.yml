@@ -1,0 +1,195 @@
+databaseChangeLog:
+  - changeSet:
+      id: First-proba
+      author: Kuzhlev
+      changes:
+        - createTable:
+            tableName: watch
+            remarks: Данные с часов
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: watch_id
+                    nullable: false
+              - column:
+                  name: token
+                  remarks: Токен часов
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: watch_token_uq
+                    nullable: false
+              - column:
+                  name: longitude
+                  remarks: Долгота человека
+                  type: real
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  remarks: Широта человека
+                  type: real
+                  constraints:
+                    nullable: false
+              - column:
+                  name: masturbate
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: heart_rate
+                  remarks: Пульс человека
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_fallen
+                  remarks: Падение
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: charge_level
+                  remarks: Заярд часов
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: network_level
+                  remarks: Интернет соеденение
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  remarks: Время
+                  type: timestamp with time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: usr
+            remarks: Пользователи
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: usr_id
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: token
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: usr_token_uq
+                    nullable: true
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: usr_username_uq
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: history
+            remarks: История запросов часов
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: history_id
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lat
+                  type: real
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lon
+                  type: real
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  remarks: Время
+                  type: timestamp with time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: usr
+            columns:
+              - column:
+                  name: first_name
+                  value: Maksim
+              - column:
+                  name: second_name
+                  value: Kuzhlev
+              - column:
+                  name: username
+                  value: Maksim
+              - column:
+                  name: password
+                  value: max
+              - column:
+                  name: role
+                  value: ADMIN
+              - column:
+                  name: active
+                  value: true
+
+
+
+
+
+
+
+
+
+
+
