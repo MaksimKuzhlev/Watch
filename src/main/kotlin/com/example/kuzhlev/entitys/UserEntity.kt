@@ -13,6 +13,7 @@ class UserEntity(
     var firstName:String,
     var secondName:String,
     var token:String?,
+    var number: String?,
     var username:String,
     var password:String,
     var role: String,

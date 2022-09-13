@@ -114,7 +114,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: password
-                  type: varchar(50)
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
@@ -182,6 +182,16 @@ databaseChangeLog:
               - column:
                   name: active
                   value: true
+  - changeSet:
+      id: Password-Code
+      author: Kuzhlev
+      changes:
+        - sql:
+            sql: create extension if not exists pgcrypto
+        - sql:
+            sql: update usr set password = crypt(password, gen_salt('bf', 8))
+
+
 
 
 

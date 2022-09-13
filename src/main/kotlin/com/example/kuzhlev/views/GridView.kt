@@ -20,6 +20,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.page.AppShellConfigurator
+import com.vaadin.flow.component.page.Page
 import com.vaadin.flow.component.page.Push
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
@@ -48,6 +49,8 @@ class GridView(
     val closeButton: Button = Button()
     private val sos:Sos =Sos(token = "0",sos = false)
     private var thread: ApllServ.FeederThread? = null
+    private var threadGrid: ApllServ.FeederThread2? = null
+    private var page: Page
 
 
     init {
@@ -63,7 +66,7 @@ class GridView(
         })
 
         updateList()
-
+        page = UI.getCurrent().page
     }
 
 
@@ -117,7 +120,7 @@ class GridView(
         }
 
 
-    private  fun updateList(){
+    fun updateList(){
         grid.setItems(service.findAllWatches())
     }
 
@@ -140,48 +143,20 @@ class GridView(
 
     }
     override fun onAttach(attachEvent: AttachEvent) {
-        thread = ApllServ.FeederThread(attachEvent.ui, this)
+        thread = ApllServ.FeederThread(attachEvent.ui, this, page)
+        threadGrid = ApllServ.FeederThread2(attachEvent.ui,this, page)
         thread!!.start()
+        threadGrid!!.start()
     }
+
 
     override fun onDetach(detachEvent: DetachEvent) {
+        threadGrid?.interrupt()
         thread?.interrupt()
         thread = null
-
-    }
-
-}
-
-
-@Push
-class ApllServ():SpringBootServletInitializer(),AppShellConfigurator {
-
-     class FeederThread(private val ui: UI, private val view: GridView) : Thread() {
-        private val l = 0
-        override fun run() {
-            while (l != 1) {
-                println("Scan")
-                if (view.service.sosrq()) {
-                    println("Попал")
-                    ui.access {
-                        println("Выполняю")
-                        view.text.text = "SOS token ${view.service.tokrq()}"
-                        view.closeButton.text = "Resolved problem"
-                        view.notifSos.open()
-                        view.grid.setClassNameGenerator {
-                            if (it.token == view.service.tokrq())
-                                "warn"
-                            else
-                                null
-                        }
-                    }
-
-
-                }
-                sleep(5000)
-            }
-
-        }
+        threadGrid = null
 
     }
 }
+
+

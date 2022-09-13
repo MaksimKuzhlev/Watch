@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route
 
 @Route("login")
 @PageTitle("Login")
-class Login : VerticalLayout(),BeforeEnterObserver {
+class Login() : VerticalLayout(),BeforeEnterObserver {
     private val login = LoginForm()
     init {
         addClassName("login-view")

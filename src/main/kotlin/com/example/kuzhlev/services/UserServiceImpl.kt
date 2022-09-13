@@ -7,12 +7,15 @@ import com.example.kuzhlev.repositories.WatchRepository
 import com.example.kuzhlev.views.CreateUserForm
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.data.binder.BeanValidationBinder
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository,private val watchRepository: WatchRepository):UserService {
+class UserServiceImpl(private val userRepository: UserRepository,private val watchRepository: WatchRepository, @Autowired private val passwordEncoder: PasswordEncoder):UserService {
     override fun findAllUsers(): List<UserEntity> = userRepository.findAll()
+
 
     override fun findAllTokens(): List<String> = watchRepository.findAll().map{it.token}
 
@@ -26,6 +29,7 @@ class UserServiceImpl(private val userRepository: UserRepository,private val wat
         if(userRepository.findByUsername(binder.bean.username)!=null&&check!=1){
             notification.open()
         } else {
+            userEntity.password = passwordEncoder.encode(userEntity.password)
             userRepository.save(userEntity)
             changeHandler?.onChange()
         }

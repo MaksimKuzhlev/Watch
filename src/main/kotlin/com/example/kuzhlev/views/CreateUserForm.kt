@@ -23,6 +23,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder
 class CreateUserForm( private val watchEntity:List<String>,private val userRepository: UserRepository,private var userEntity: UserEntity,private val service:UserService):FormLayout() {
     private val firstName = TextField("First name")
     private val secondName = TextField ("Second name")
+    private val number = TextField("number")
     private val username = TextField ("username")
     private val password = TextField ("password")
     private val role = ComboBox<String>("role")
@@ -51,6 +52,7 @@ class CreateUserForm( private val watchEntity:List<String>,private val userRepos
             firstName,
             secondName,
             token,
+            number,
             username,
             password,
             role,
