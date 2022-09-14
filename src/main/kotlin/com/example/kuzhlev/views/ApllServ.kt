@@ -15,11 +15,8 @@ class ApllServ(): SpringBootServletInitializer(), AppShellConfigurator {
         override fun run() {
             try{
                 while (ui.page == page) {
-                    println("Scan")
                     if (view.service.sosrq()) {
-                        println("Попал")
                         ui.access {
-                            println("Выполняю")
                             view.text.text = "SOS token ${view.service.tokrq()}"
                             view.closeButton.text = "Resolved problem"
                             view.notifSos.open()
@@ -34,6 +31,7 @@ class ApllServ(): SpringBootServletInitializer(), AppShellConfigurator {
                     sleep(5000)
                 }
             } catch (e:InterruptedException){
+                ui.access { view.notifSos.close() }
                 println(e)
             }
         }
