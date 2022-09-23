@@ -15,13 +15,16 @@ interface WatchService {
     fun delete(watchEntity: WatchEntity,changeHandler: CreateWatchForm.ChangeHandler?)
     fun check(token: Token):Boolean
 
+    fun createToken():String
     fun create(positionHistoryEntity: PositionHistoryEntity)
 
     fun sos(sos: Sos)
 
     fun sosrq():Boolean
 
-    fun tokrq():String
+    fun tokrq():MutableSet<String>
+
+    fun tokremove(token: String)
 
 
 }

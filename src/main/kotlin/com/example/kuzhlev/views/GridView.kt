@@ -14,6 +14,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.notification.NotificationVariant
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -22,6 +23,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.page.AppShellConfigurator
 import com.vaadin.flow.component.page.Page
 import com.vaadin.flow.component.page.Push
+import com.vaadin.flow.data.binder.BeanValidationBinder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.server.VaadinSession
@@ -37,20 +39,20 @@ import javax.annotation.security.RolesAllowed
     value = "./themes/mytheme/components/dynamic-grid-cell-background-color.css"
 )
 class GridView(
-     val service: WatchService,
-    watchEntity: WatchEntity,
+    val service: WatchService,
+     watchEntity: WatchEntity,
     watchRepo: WatchRepository,
     positionRepository: PositionRepository,
+
 ):VerticalLayout() {
     val grid: Grid<WatchEntity> = Grid(WatchEntity::class.java)
-    private val form = CreateWatchForm(service,watchEntity, watchRepo,positionRepository)
+    val form = CreateWatchForm(service,watchEntity, watchRepo,positionRepository)
     val notifSos = Notification()
     val text = Div()
-    val closeButton: Button = Button()
-    private val sos:Sos =Sos(token = "0",sos = false)
     private var thread: ApllServ.FeederThread? = null
     private var threadGrid: ApllServ.FeederThread2? = null
     private var page: Page
+
 
 
     init {
@@ -62,11 +64,13 @@ class GridView(
             override fun onChange() {
                 form.isVisible = false
                 updateList()
+                notifSos.close()
             }
         })
 
         updateList()
         page = UI.getCurrent().page
+
     }
 
 
@@ -108,9 +112,10 @@ class GridView(
     private fun getToolBar():HorizontalLayout{
             val addContactButton = Button("Add contact")
             addContactButton.addClickListener {
-                form.editPeople(WatchEntity(0,"",0.0,0.0,false, 0,false,0,0))
+                form.editPeople(WatchEntity(0,service.createToken(),0.0,0.0,false, 0,false,0,0))
                 form.checkPosition.isVisible = false
                 form.checkMoving.isVisible = false
+                form.butResolved.isVisible = false
                 form.isVisible = true
 
             }
@@ -124,25 +129,17 @@ class GridView(
         grid.setItems(service.findAllWatches())
     }
 
-    private fun configNotification(){
+     private fun configNotification(){
         notifSos.position = Notification.Position.TOP_END
         notifSos.addThemeVariants(NotificationVariant.LUMO_ERROR)
-        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE)
 
-        closeButton.element.setAttribute("aria-label", "Close")
-
-
-        closeButton.addClickListener { notifSos.close()
-            service.sos(sos)
-            grid.setClassNameGenerator { null }
-        }
-
-        val layout = VerticalLayout(text, closeButton)
+        val layout = HorizontalLayout(text)
         layout.alignItems = FlexComponent.Alignment.CENTER
         notifSos.add(layout)
 
     }
     override fun onAttach(attachEvent: AttachEvent) {
+
         thread = ApllServ.FeederThread(attachEvent.ui, this, page)
         threadGrid = ApllServ.FeederThread2(attachEvent.ui,this, page)
         thread!!.start()
@@ -151,6 +148,7 @@ class GridView(
 
 
     override fun onDetach(detachEvent: DetachEvent) {
+        notifSos.close()
         threadGrid?.interrupt()
         thread?.interrupt()
         thread = null

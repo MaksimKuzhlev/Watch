@@ -119,6 +119,7 @@ class UserView(private val service:UserService,userEntity: UserEntity,userReposi
 
 
     override fun onDetach(detachEvent: DetachEvent) {
+        notification.close()
         thread?.interrupt()
         thread = null
 

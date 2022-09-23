@@ -2,6 +2,7 @@ package com.example.kuzhlev.controllers
 
 import com.example.kuzhlev.DTO.Sos
 import com.example.kuzhlev.DTO.Token
+import com.example.kuzhlev.entitys.ActivityEntity
 import com.example.kuzhlev.entitys.PositionHistoryEntity
 import com.example.kuzhlev.entitys.WatchEntity
 import com.example.kuzhlev.services.WatchService
@@ -28,6 +29,11 @@ class MainWatchController(private val watchService: WatchService,private val pos
 
     @PostMapping("/sos")
     fun sos(@RequestBody sos:Sos) = watchService.sos(sos)
+
+    @PostMapping("/activity")
+    fun activity(@RequestBody activity: ActivityEntity){
+
+    }
 
 
 

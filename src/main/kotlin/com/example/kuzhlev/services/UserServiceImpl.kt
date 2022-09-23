@@ -29,7 +29,8 @@ class UserServiceImpl(private val userRepository: UserRepository,private val wat
         if(userRepository.findByUsername(binder.bean.username)!=null&&check!=1){
             notification.open()
         } else {
-            userEntity.password = passwordEncoder.encode(userEntity.password)
+            if(check!=1)
+                userEntity.password = passwordEncoder.encode(userEntity.password)
             userRepository.save(userEntity)
             changeHandler?.onChange()
         }

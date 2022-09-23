@@ -1,5 +1,6 @@
 package com.example.kuzhlev.views
 
+import com.example.kuzhlev.DTO.Sos
 import com.example.kuzhlev.entitys.WatchEntity
 import com.example.kuzhlev.repositories.PositionRepository
 import com.example.kuzhlev.repositories.WatchRepository
@@ -48,6 +49,8 @@ final class CreateWatchForm(private val service:WatchService,
     private var changeHandler: ChangeHandler?=null
     private val notifError = Notification()
     private val gmaps = GoogleMap("AIzaSyC7Q3-PD4pYBdAlDx9O_gxFAEUewPVGOeE", null,null)
+    val butResolved=Button("Resolved Problem")
+    private val sos: Sos = Sos(token = "0",sos = false)
     interface ChangeHandler {
         fun onChange(){}
     }
@@ -61,7 +64,8 @@ final class CreateWatchForm(private val service:WatchService,
             token,
             createButtonsLayout(),
             checkPosition,
-            checkMoving
+            checkMoving,
+            butResolved
         )
         binder.bindInstanceFields(this)
 
@@ -73,21 +77,24 @@ final class CreateWatchForm(private val service:WatchService,
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR)
         close.addThemeVariants(ButtonVariant.LUMO_TERTIARY)
         checkPosition.addThemeVariants(ButtonVariant.LUMO_PRIMARY)
+        butResolved.addThemeVariants(ButtonVariant.LUMO_ERROR)
 
         save.addClickShortcut(Key.ENTER)
         close.addClickShortcut(Key.ESCAPE)
         checkPosition.addClickShortcut(Key.ESCAPE)
 
         save.addClickListener {
-           if(!token.isEmpty){
                binder.writeBean(watchEntity)
                service.save(watchEntity,changeHandler)
-           }
-           else
-               notifError.open()
+
         }
         delete.addClickListener {  service.delete(watchEntity,changeHandler) }
         close.addClickListener { isVisible=false }
+        butResolved.addClickListener {
+            service.sos(sos)
+            service.tokremove(watchEntity.token)
+            changeHandler?.onChange()
+        }
 
         checkPosition.addClickListener { gmaps.center = LatLon(binder.bean.latitude,binder.bean.longitude)
             gmaps.addMarker("Center", LatLon(binder.bean.latitude,binder.bean.longitude), false, "")
@@ -95,6 +102,7 @@ final class CreateWatchForm(private val service:WatchService,
 
         checkMoving.addClickListener {
             val positions = positionRepository.findByToken(binder.bean.token)
+            positions.subList(0,5)
             gmaps.center = LatLon(binder.bean.latitude,binder.bean.longitude)
             positions.forEach{
                 gmaps.addMarker("Center", LatLon(it.lat,it.lon), false, "")
@@ -103,8 +111,10 @@ final class CreateWatchForm(private val service:WatchService,
         }
 
 
+
         checkPosition.isVisible = false
         checkMoving.isVisible = false
+        butResolved.isVisible=false
         isVisible = false
 
 

@@ -1,9 +1,11 @@
 package com.example.kuzhlev.security
 
+
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.textfield.PasswordField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.server.VaadinServletRequest
+import com.vaadin.flow.server.VaadinSession
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,9 +14,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Component
 
 @Component
-class SecurityService {
-
-
+class SecurityService() {
 
 
 
@@ -25,6 +25,8 @@ class SecurityService {
             VaadinServletRequest.getCurrent().httpServletRequest, null,
             null
         )
+        val session = VaadinSession.getCurrent()
+
     }
 
     companion object {

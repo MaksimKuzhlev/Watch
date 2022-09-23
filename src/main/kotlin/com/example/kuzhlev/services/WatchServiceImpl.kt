@@ -6,14 +6,7 @@ import com.example.kuzhlev.entitys.PositionHistoryEntity
 import com.example.kuzhlev.entitys.WatchEntity
 import com.example.kuzhlev.repositories.PositionRepository
 import com.example.kuzhlev.repositories.WatchRepository
-
 import com.example.kuzhlev.views.CreateWatchForm
-import com.example.kuzhlev.views.GridView
-import com.vaadin.flow.component.Text
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.page.Push
-import com.vaadin.flow.server.Command
-import com.vaadin.flow.spring.SpringVaadinSession
 import org.springframework.stereotype.Service
 
 
@@ -23,7 +16,7 @@ class WatchServiceImpl(private val watchRepository: WatchRepository,
                        private val positionRepository: PositionRepository,
                       ):WatchService {
     private var soss:Boolean = false
-    private var tokenn:String = "0"
+    private var tokenn = mutableSetOf("0")
 
 
 
@@ -54,27 +47,42 @@ class WatchServiceImpl(private val watchRepository: WatchRepository,
     }
 //Сохранение Часов через форму
    override fun save(watchEntity:WatchEntity,changeHandler: CreateWatchForm.ChangeHandler?) {
-        if(watchRepository.findByToken(watchEntity.token)==null){
-            watchRepository.save(watchEntity)
-            changeHandler?.onChange()
-        }
+            if(watchRepository.findByToken(watchEntity.token)==null){
+                watchEntity.token=createToken()
+                watchRepository.save(watchEntity)
+                changeHandler?.onChange()
+            }
+
+    }
+//Создание токена
+    override fun createToken(): String {
+        var rand =""
+        do {
+            for (l in 0..7) {
+                rand += ('a'..'z').random().toString()
+            }
+        } while(watchRepository.findByToken(rand)!=null)
+        return rand
     }
 //проверка на существование токена
     override fun check(token: Token) = watchRepository.findByToken(token.token)!=null
 
     override fun sos(sos: Sos) {
       soss = sos.sos
-      tokenn = sos.token
-
-
+      tokenn.add(sos.token )
     }
 
     override fun sosrq(): Boolean {
         return soss
     }
 
-    override fun tokrq(): String {
+    override fun tokrq(): MutableSet<String> {
         return tokenn
+    }
+
+    override fun tokremove(token:String) {
+        tokenn.remove(token)
+
     }
 
 
