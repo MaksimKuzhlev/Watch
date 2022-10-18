@@ -88,6 +88,7 @@ class UserView(private val service:UserService,userEntity: UserEntity,userReposi
 
         val addContactButton = Button("Add contact")
         addContactButton.addClickListener {
+            addContactButton.ui.ifPresent{ui -> ui.navigate("info")}
             form.editPeople(UserEntity(0,"","","","","","","",true))
             form.isVisible = true
         }

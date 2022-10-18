@@ -27,7 +27,6 @@ class MainLayout(@Autowired private val securityService: SecurityService, privat
         createHeader()
         createDraw()
 
-
     }
 
     private fun createHeader() {

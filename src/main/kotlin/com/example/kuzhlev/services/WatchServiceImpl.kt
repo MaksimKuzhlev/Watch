@@ -48,7 +48,6 @@ class WatchServiceImpl(private val watchRepository: WatchRepository,
 //Сохранение Часов через форму
    override fun save(watchEntity:WatchEntity,changeHandler: CreateWatchForm.ChangeHandler?) {
             if(watchRepository.findByToken(watchEntity.token)==null){
-                watchEntity.token=createToken()
                 watchRepository.save(watchEntity)
                 changeHandler?.onChange()
             }
