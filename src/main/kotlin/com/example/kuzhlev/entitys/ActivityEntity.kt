@@ -9,7 +9,11 @@ import javax.persistence.*
 class ActivityEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long,
-    var calories:Int,
-
-        )
+    var id:Long,
+    var steps:Int,
+    var pulse: Int,
+    var kcal: Int,
+    var night_rise:Int,
+    var token:String,
+    var date:String,
+    )

@@ -85,10 +85,10 @@ final class CreateWatchForm(private val service:WatchService,
 
         save.addClickListener {
                binder.writeBean(watchEntity)
-               service.save(watchEntity,changeHandler)
+               service.save(watchEntity)
 
         }
-        delete.addClickListener {  service.delete(watchEntity,changeHandler) }
+        delete.addClickListener {  service.delete(watchEntity) }
         close.addClickListener { isVisible=false }
         butResolved.addClickListener {
             service.sos(sos)

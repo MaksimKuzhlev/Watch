@@ -4,5 +4,30 @@
     width: 100%
 }
 
+.mainLayout{
+    background: #F5F7F8;
+}
+
+.objectBack{
+    background: white;
+    border-radius: 16px;
+    max-width: 775px;
+    max-height: 401px;
+}
+
+.returnButton{
+    border: 1px solid blue;
+    border-radius: 8px;
+    color: black;
+}
+
+.textButton{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: right;
+}
 
 

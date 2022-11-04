@@ -5,6 +5,8 @@ import com.example.kuzhlev.DTO.Token
 import com.example.kuzhlev.entitys.ActivityEntity
 import com.example.kuzhlev.entitys.PositionHistoryEntity
 import com.example.kuzhlev.entitys.WatchEntity
+import com.example.kuzhlev.repositories.ActivityRepository
+import com.example.kuzhlev.services.ActivityService
 import com.example.kuzhlev.services.WatchService
 
 
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/watch")
-class MainWatchController(private val watchService: WatchService,private val positionHistoryEntity: PositionHistoryEntity) {
-
+class MainWatchController(private val watchService: WatchService,
+                          private val positionHistoryEntity: PositionHistoryEntity,
+                          private val activityService: ActivityService,
+                          private val activityRepository: ActivityRepository) {
 
     @PostMapping()
     fun update(@RequestBody watch:WatchEntity)  {
@@ -32,7 +36,9 @@ class MainWatchController(private val watchService: WatchService,private val pos
 
     @PostMapping("/activity")
     fun activity(@RequestBody activity: ActivityEntity){
-
+        val list = activityRepository.findByToken(activity.token)
+        activityService.delete(list.first())
+        activityService.save(activity)
     }
 
 

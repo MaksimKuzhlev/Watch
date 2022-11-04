@@ -11,11 +11,10 @@ interface WatchService {
     fun findAllWatches():List<WatchEntity>
     //fun create(watch: WatchEntity)
     fun update(watch:WatchEntity)
-    fun save(watchEntity: WatchEntity, changeHandler: CreateWatchForm.ChangeHandler?)
-    fun delete(watchEntity: WatchEntity,changeHandler: CreateWatchForm.ChangeHandler?)
+    fun save(watchEntity: WatchEntity)
+    fun delete(watchEntity: WatchEntity)
     fun check(token: Token):Boolean
 
-    fun createToken():String
     fun create(positionHistoryEntity: PositionHistoryEntity)
 
     fun sos(sos: Sos)

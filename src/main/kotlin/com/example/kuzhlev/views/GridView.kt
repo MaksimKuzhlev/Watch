@@ -1,10 +1,15 @@
 package com.example.kuzhlev.views
 
+import com.example.kuzhlev.DTO.CheckUpdate
 import com.example.kuzhlev.DTO.Sos
-import com.example.kuzhlev.entitys.WatchEntity
-import com.example.kuzhlev.repositories.PositionRepository
-import com.example.kuzhlev.repositories.WatchRepository
+import com.example.kuzhlev.entitys.*
+import com.example.kuzhlev.repositories.*
+import com.example.kuzhlev.services.PatientService
 import com.example.kuzhlev.services.WatchService
+import com.example.kuzhlev.views.InfoAboutPeople.DataDisease
+import com.example.kuzhlev.views.InfoAboutPeople.InfoPeopleForm
+import com.example.kuzhlev.views.InfoAboutPeople.PhysicalPeopleForm
+import com.example.kuzhlev.views.InfoAboutPeople.TakingMedication
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.DetachEvent
@@ -28,6 +33,7 @@ import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.server.VaadinSession
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
+import java.time.LocalDate
 import javax.annotation.security.RolesAllowed
 
 
@@ -40,9 +46,10 @@ import javax.annotation.security.RolesAllowed
 )
 class GridView(
     val service: WatchService,
-     watchEntity: WatchEntity,
+    watchEntity: WatchEntity,
     watchRepo: WatchRepository,
     positionRepository: PositionRepository,
+    val patientService: PatientService
 
 ):VerticalLayout() {
     val grid: Grid<WatchEntity> = Grid(WatchEntity::class.java)
@@ -52,9 +59,7 @@ class GridView(
     private var thread: ApllServ.FeederThread? = null
     private var threadGrid: ApllServ.FeederThread2? = null
     private var page: Page
-
-
-
+    var check = 0
     init {
         setSizeFull()
         configureGrid()
@@ -93,7 +98,10 @@ class GridView(
             columns.forEach{col->col.setAutoWidth(true)}
             asSingleSelect()
                 .addValueChangeListener {
-                    form.editPeople(it.value)
+                    val check=CheckUpdate(true,it.value.id,it.value.token)
+                    patientService.check(check)
+                    ui.ifPresent{ui -> ui.navigate("info")}
+                    //form.editPeople(it.value)
                 }
         }
 
@@ -112,11 +120,14 @@ class GridView(
     private fun getToolBar():HorizontalLayout{
             val addContactButton = Button("Add contact")
             addContactButton.addClickListener {
-                form.editPeople(WatchEntity(0,service.createToken(),0.0,0.0,false, 0,false,0,0))
-                form.checkPosition.isVisible = false
-                form.checkMoving.isVisible = false
-                form.butResolved.isVisible = false
-                form.isVisible = true
+                val check=CheckUpdate(false,0,"")
+                patientService.check(check)
+                addContactButton.ui.ifPresent{ui -> ui.navigate("info")}
+                //form.editPeople(WatchEntity(0,"2",0.0,0.0,false, 0,false,0,0,"Дамир Раджабович"))
+                //form.checkPosition.isVisible = false
+                //form.checkMoving.isVisible = false
+                //form.butResolved.isVisible = false
+                //form.isVisible = true
 
             }
             val toolBar = HorizontalLayout(addContactButton)

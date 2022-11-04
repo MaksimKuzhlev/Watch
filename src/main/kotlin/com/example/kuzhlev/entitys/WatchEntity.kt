@@ -10,7 +10,7 @@ import javax.persistence.*
 class WatchEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    var id: Long,
     var token: String,
     var longitude: Double,
     var latitude: Double,
@@ -19,5 +19,6 @@ class WatchEntity (
     var has_fallen:Boolean,
     var charge_level:Int,
     var network_level:Int,
+    var name:String,
 
 )

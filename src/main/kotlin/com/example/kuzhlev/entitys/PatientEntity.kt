@@ -15,6 +15,6 @@ class PatientEntity (
     var address:String,
     var number: String,
     var email: String,
-    var numberConfidant: String
-
+    var numberConfidant: String,
+    var token: String,
     )
