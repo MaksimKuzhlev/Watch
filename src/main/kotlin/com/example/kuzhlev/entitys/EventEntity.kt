@@ -4,16 +4,19 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 import javax.persistence.*
 
+
 @Entity
-@Table(name="patientPhysic")
+@Table(name="event")
 @Component
-class PatientPhysicalEntity (
+class EventEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long,
-    var token:String,
-    var weight:Int,
-    var growth:Int,
-    var old:Int,
-    var birthday: LocalDate
-    )
+    val id: Long,
+    var lat:Double,
+    var lon:Double,
+    var type: String,
+    var time: String,
+    var date: LocalDate,
+
+
+        )

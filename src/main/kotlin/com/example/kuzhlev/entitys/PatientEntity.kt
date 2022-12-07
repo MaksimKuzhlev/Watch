@@ -1,6 +1,7 @@
 package com.example.kuzhlev.entitys
 
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
@@ -17,4 +18,8 @@ class PatientEntity (
     var email: String,
     var numberConfidant: String,
     var token: String,
+    var weight:Int,
+    var growth:Int,
+    var old:Int,
+    var birthday: LocalDate
     )

@@ -1,0 +1,18 @@
+[part='date'][selected]{
+    background-color: blue;
+    --lumo-primary-color: darkgreen;
+    border-radius: 8px;
+    color: white !important;
+}
+
+[part='date']:hover{
+    background: skyblue;
+    border-radius: 8px;
+}
+
+[part='date'][selected]:hover{
+    background-color: blue;
+    --lumo-primary-color: darkgreen;
+    border-radius: 8px;
+    color: white !important;
+}

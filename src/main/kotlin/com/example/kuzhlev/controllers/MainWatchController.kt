@@ -11,6 +11,9 @@ import com.example.kuzhlev.services.WatchService
 
 
 import org.springframework.web.bind.annotation.*
+import java.time.Clock
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RestController
 @RequestMapping("/watch")
@@ -22,9 +25,11 @@ class MainWatchController(private val watchService: WatchService,
     @PostMapping()
     fun update(@RequestBody watch:WatchEntity)  {
         watchService.update(watch)
+        positionHistoryEntity.id = 0
         positionHistoryEntity.token=watch.token
         positionHistoryEntity.lat=watch.latitude
         positionHistoryEntity.lon=watch.longitude
+        positionHistoryEntity.date = LocalDate.now()
         watchService.create(positionHistoryEntity)
     }
 

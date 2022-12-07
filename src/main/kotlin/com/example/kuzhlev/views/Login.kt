@@ -23,7 +23,7 @@ class Login() : VerticalLayout(),BeforeEnterObserver {
         login.action = "login"
         login.isForgotPasswordButtonVisible = false
         add(H1("Watch data"),login)
-
+        style.set("background","white")
     }
 
     override fun beforeEnter(p0: BeforeEnterEvent) {

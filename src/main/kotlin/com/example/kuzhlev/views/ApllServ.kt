@@ -1,9 +1,12 @@
 package com.example.kuzhlev.views
 
+import com.example.kuzhlev.entitys.WatchEntity
 import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.page.AppShellConfigurator
 import com.vaadin.flow.component.page.Page
 import com.vaadin.flow.component.page.Push
+import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.server.AppShellSettings
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
@@ -22,6 +25,7 @@ class ApllServ(): SpringBootServletInitializer(), AppShellConfigurator {
                             view.text.text = "SOS token ${view.service.tokrq().last()}"
                             view.notifSos.open()
                             view.form.butResolved.isVisible = true
+                            view.updateList(view.textField.value)
                             view.grid.setClassNameGenerator {
 
                                 if (view.service.tokrq().contains(it.token))
@@ -50,7 +54,7 @@ class ApllServ(): SpringBootServletInitializer(), AppShellConfigurator {
                 while (ui.page == page){
                     sleep(30000)
                     ui.access{
-                        view.updateList()
+                        view.updateList(view.textField.value)
                     }
                 }
             } catch(e:InterruptedException){

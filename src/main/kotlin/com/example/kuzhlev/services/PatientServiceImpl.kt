@@ -1,19 +1,19 @@
 package com.example.kuzhlev.services
 
 import com.example.kuzhlev.DTO.CheckUpdate
+import com.example.kuzhlev.DTO.Sos
 import com.example.kuzhlev.entitys.PatientDiseaseEntity
 import com.example.kuzhlev.entitys.PatientEntity
 import com.example.kuzhlev.entitys.PatientMedicateEntity
-import com.example.kuzhlev.entitys.PatientPhysicalEntity
+
 import com.example.kuzhlev.repositories.*
 import org.springframework.stereotype.Service
 
 @Service
-class PatientServiceImpl(private val physicalRepository: PhysicalRepository,
-                         private val watchRepository: WatchRepository,
+class PatientServiceImpl(private val watchRepository: WatchRepository,
                          private val patientRepository: PatientRepository,
                          private val diseaseRepository: DiseaseRepository,
-                         private val medicateRepository: MedicateRepository
+                         private val medicateRepository: MedicateRepository,
                          ):PatientService {
 
     var id:Long = 0
@@ -27,8 +27,7 @@ class PatientServiceImpl(private val physicalRepository: PhysicalRepository,
 
     override fun deletePeople(token: String) {
         patientRepository.delete(patientRepository.findByToken(token))
-        physicalRepository.delete(physicalRepository.findByToken(token))
-        diseaseRepository.delete(diseaseRepository.findByToken(token))
+        diseaseRepository.delete(diseaseRepository.findByToken(token)!!)
         medicateRepository.findByToken(token).forEach { medicateRepository.delete(it) }
     }
 
@@ -38,9 +37,6 @@ class PatientServiceImpl(private val physicalRepository: PhysicalRepository,
 
     override fun saveDiseasePeople(patientDiseaseEntity: PatientDiseaseEntity) {
         diseaseRepository.save(patientDiseaseEntity)
-    }
-    override fun savePhysicPeople(physicalEntity: PatientPhysicalEntity) {
-        physicalRepository.save(physicalEntity)
     }
 
     override fun deleteMedicatePeople(medicateEntity: PatientMedicateEntity) {
@@ -79,4 +75,14 @@ class PatientServiceImpl(private val physicalRepository: PhysicalRepository,
     override fun namerq(token:String): String {
        return watchRepository.findByToken(token)?.name ?: ""
     }
+
+    override fun tachycardiaCheck(token: String): Boolean {
+        return diseaseRepository.findByToken(token)!!.tachycardia
+    }
+
+    override fun bradicardiaCheck(token: String): Boolean {
+        return diseaseRepository.findByToken(token)!!.bradycardia
+    }
+
+
 }

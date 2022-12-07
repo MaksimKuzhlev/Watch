@@ -35,9 +35,8 @@ class MainLayoutPeople(@Autowired private val securityService: SecurityService, 
         val title = H1("Watch Data")
         title.style.set("font-size", "var(--lumo-font-size-l)")["margin"] = "0"
         title.setWidthFull()
-        addToNavbar(toggle,title,logout)
+        //addToNavbar(toggle,title,logout)
         addToDrawer(getTabs())
-
 
     }
 
@@ -45,7 +44,7 @@ class MainLayoutPeople(@Autowired private val securityService: SecurityService, 
     private fun getTabs(): Tabs {
         val tabs = Tabs()
         tabs.add(
-            createTab(VaadinIcon.USER, "Личные данные",GridView::class.java),
+            createTab(VaadinIcon.USER, "Личные данные",Inform::class.java),
             createTab(VaadinIcon.BAR_CHART_H, "Статистика",StatsView::class.java),
             createTab(VaadinIcon.DOCTOR_BRIEFCASE, "Болезни",DiseaseView::class.java),
             createTab(VaadinIcon.MAP_MARKER, "Карта",MapView::class.java),

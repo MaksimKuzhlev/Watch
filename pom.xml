@@ -43,6 +43,16 @@
 			<version>4.15.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.vaadin.addons.flowingcode</groupId>
+			<artifactId>year-month-calendar</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin.componentfactory</groupId>
+			<artifactId>togglebutton</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.github.appreciated</groupId>
 			<artifactId>apexcharts</artifactId>
 			<version>23.0.0</version>
@@ -87,6 +97,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.vaddon</groupId>
+			<artifactId>mediaquery</artifactId>
+			<version>5.0.2</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

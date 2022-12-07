@@ -7,6 +7,7 @@ import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.combobox.ComboBox
+import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -14,7 +15,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.theme.lumo.LumoUtility
-
+@CssImport(
+    value = "./themes/mytheme/styles.css"
+)
 class TakingMedication(private val patientService: PatientService, private var medicateEntity: PatientMedicateEntity,private val medicateRepository: MedicateRepository):VerticalLayout() {
     private val addButton = Button("Добавить лекарство")
     private val layout3=VerticalLayout()
@@ -26,11 +29,12 @@ class TakingMedication(private val patientService: PatientService, private var m
 
     init {
         //maxWidth = "700px"
-        width = "700px"
+        width = "884px"
 
         style.set("background","white").set("border-radius","16px")
         val text = H2("Принимаемые лекарства")
         text.style.set("margin-top","10px")
+        text.style.set("margin-bottom","8px")
         alignItems = FlexComponent.Alignment.END
 
         add(text,layout3,confButton())
@@ -40,6 +44,7 @@ class TakingMedication(private val patientService: PatientService, private var m
         layout3.style.set("padding","0px")
         setAlignSelf(FlexComponent.Alignment.STRETCH,addButton)
         addButton.style.set("margin-top","22px")
+        addButton.addClassNames("addMedicateButton","textButton")
         addButton.addClickListener {
             layout3.add(addMedicate())
             i++
@@ -50,8 +55,11 @@ class TakingMedication(private val patientService: PatientService, private var m
 
     private fun addMedicate():Component{
         val amount = ComboBox<String> ("Кол-во")
+        amount.style.set("padding-bottom","0").set("padding-top","0")
         val frequensy = ComboBox<String> ("Частота")
+        frequensy.style.set("padding-bottom","0").set("padding-top","0")
         val nameMed = TextField("Название")
+        nameMed.style.set("padding-bottom","0").set("padding-top","0")
         val delButton = Button(createIcon(VaadinIcon.CLOSE_CIRCLE))
 
         delButton.width = "20px"
@@ -107,8 +115,11 @@ class TakingMedication(private val patientService: PatientService, private var m
         val persisted = c.id.toInt() != 0
         if (persisted) {
             val amount = ComboBox<String> ("Кол-во")
+            amount.style.set("padding-bottom","0").set("padding-top","0")
             val frequensy = ComboBox<String> ("Частота")
+            frequensy.style.set("padding-bottom","0").set("padding-top","0")
             val nameMed = TextField("Название")
+            nameMed.style.set("padding-bottom","0").set("padding-top","0")
             val delButton = Button(createIcon(VaadinIcon.CLOSE_CIRCLE))
 
             amount.width = "25%"

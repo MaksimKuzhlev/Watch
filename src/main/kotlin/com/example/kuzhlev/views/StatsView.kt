@@ -37,19 +37,22 @@ import javax.annotation.security.RolesAllowed
     value = "./themes/mytheme/styles.css"
 )
 class StatsView(private val patientService: PatientService,private val activityRepository: ActivityRepository):VerticalLayout() {
-    private val returnButton = Button("Список клиентов")
+    private val spanForReturn = Span(Text("Список клиентов"),createIcon(VaadinIcon.ARROW_RIGHT,1))
+    private val returnButton = Button(spanForReturn)
     private val mapSteps = mutableMapOf<String,Int>()
     private val mapKK = mutableMapOf<String,Int>()
     private val mapPulse = mutableMapOf<String,Int>()
     private val mapNight = mutableMapOf<String,Int>()
     private val list = mutableListOf<String>()
     private  var avatarBasic = Avatar()
+    private val patientLayout = PatientLayout()
     init {
         addClassName("mainLayout")
         setSizeFull()
         alignItems = FlexComponent.Alignment.END
 
         val title = H1("Статистика")
+        title.addClassName("h1Title")
         title.style.set("margin-top","5px").set("margin-bottom","10px")
 
         val layout1 = HorizontalLayout(stepsCharts(),pulseChart())
@@ -163,22 +166,26 @@ class StatsView(private val patientService: PatientService,private val activityR
         layout.setWidthFull()
         if(check == 1){
             val title = Span("Ср. значение:${res/7} шага/день")
-            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O),Text(" Шагов пройдено"))
+            title.addClassNames("statTitle")
+            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O,2),Text(" Шагов пройдено"))
             layout.add(title,subTitle)
         }
         if(check == 2){
             val title = Span("Ср. значение:${res/7} Ккал/день")
-            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O),Text(" Ккал сожжено"))
+            title.addClassNames("statTitle")
+            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O,2),Text(" Ккал сожжено"))
             layout.add(title,subTitle)
         }
         if(check == 3){
             val title = Span("Ср. значение:${res/7} ударов/мин")
-            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O),Text(" Показатель пульса"))
+            title.addClassNames("statTitle")
+            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O,2),Text(" Показатель пульса"))
             layout.add(title,subTitle)
         }
         if(check == 4){
             val title = Span("Ср. значение:${res/7} раза/ночь")
-            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O),Text(" Количество ночных пробуждений"))
+            title.addClassNames("statTitle")
+            val subTitle = Span(createIcon(VaadinIcon.QUESTION_CIRCLE_O,2),Text(" Количество ночных пробуждений"))
             layout.add(title,subTitle)
         }
 
@@ -190,10 +197,16 @@ class StatsView(private val patientService: PatientService,private val activityR
         return layout
     }
 
-    private fun createIcon(vaadinIcon: VaadinIcon):Component {
+    private fun createIcon(vaadinIcon: VaadinIcon,check:Int):Component {
         val icon = vaadinIcon.create()
-        icon.color = "blue"
-        icon.style["padding"] = "var(--lumo-space-xs"
+        if(check==1){
+            icon.addClassNames("leftStr")
+            icon.color = "black"
+            icon.style["padding"] = "var(--lumo-space-xs"
+        } else{
+            icon.color = "blue"
+            icon.style["padding"] = "var(--lumo-space-xs"
+        }
         return icon
     }
 

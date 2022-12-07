@@ -7,9 +7,6 @@ import com.example.kuzhlev.views.CreateWatchForm
 interface PatientService {
     fun saveInfoPeople(patientEntity: PatientEntity)
     fun deletePeople(token:String)
-
-    fun savePhysicPeople(physicalEntity: PatientPhysicalEntity)
-
     fun saveDiseasePeople(patientDiseaseEntity: PatientDiseaseEntity)
     fun saveMedicatePeople(medicateEntity: PatientMedicateEntity)
     fun deleteMedicatePeople(medicateEntity: PatientMedicateEntity)
@@ -23,5 +20,8 @@ interface PatientService {
     fun tokenrq():String
 
     fun namerq(token:String):String
+
+    fun tachycardiaCheck(token: String):Boolean
+    fun bradicardiaCheck(token: String):Boolean
 
 }

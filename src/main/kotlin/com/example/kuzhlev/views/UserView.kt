@@ -2,6 +2,7 @@ package com.example.kuzhlev.views
 
 import com.example.kuzhlev.entitys.UserEntity
 import com.example.kuzhlev.repositories.UserRepository
+import com.example.kuzhlev.security.SecurityService
 import com.example.kuzhlev.services.UserService
 import com.example.kuzhlev.services.WatchService
 import com.vaadin.flow.component.*
@@ -9,6 +10,7 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Div
+import com.vaadin.flow.component.html.H1
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.notification.NotificationVariant
@@ -19,11 +21,12 @@ import com.vaadin.flow.component.page.Page
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.server.VaadinSession
+import org.springframework.beans.factory.annotation.Autowired
 import java.awt.SystemColor.text
 import javax.annotation.security.RolesAllowed
 
 
-@Route("user",layout = MainLayout::class)
+@Route("user", layout = MainLayout::class)
 @PageTitle("USER")
 @RolesAllowed("ADMIN")
 class UserView(private val service:UserService,userEntity: UserEntity,userRepository: UserRepository, val serv:WatchService):VerticalLayout() {
@@ -33,17 +36,22 @@ class UserView(private val service:UserService,userEntity: UserEntity,userReposi
     private var page: Page
     val notification = Notification()
     val text = Div()
+
     init{
+
+        val title = H1("Список админов")
+        title.addClassName("h1Title")
+        title.style.set("margin-top","10px")
+        title.style.set("margin-bottom","24px")
+        style.set("background","#F5F7F8")
+
         setSizeFull()
+
         configNotification()
         confGrid()
-        add(getToolBar(),getContent())
-        form.setChangeHandler(object : CreateUserForm.ChangeHandler {
-            override fun onChange() {
-                form.isVisible = false
-                updateList()
-            }
-        })
+
+        add(title,getToolBar(),getContent())
+
         updateList()
         page = UI.getCurrent().page
     }

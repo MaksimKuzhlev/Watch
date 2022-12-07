@@ -10,6 +10,7 @@
     "@polymer/iron-meta": "3.0.1",
     "@polymer/iron-resizable-behavior": "3.0.1",
     "@polymer/polymer": "3.4.1",
+    "@vaadin-component-factory/vcf-toggle-button": "1.0.3",
     "@vaadin/accordion": "23.1.3",
     "@vaadin/app-layout": "23.1.3",
     "@vaadin/avatar": "23.1.3",
@@ -105,6 +106,7 @@
     "apexcharts": "3.30.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.28.0",
+    "element-match-media": "0.0.3",
     "lit": "2.2.3",
     "onecolor": "3.1.0"
   },
@@ -141,6 +143,7 @@
       "@polymer/iron-meta": "3.0.1",
       "@polymer/iron-resizable-behavior": "3.0.1",
       "@polymer/polymer": "3.4.1",
+      "@vaadin-component-factory/vcf-toggle-button": "1.0.3",
       "@vaadin/accordion": "23.1.3",
       "@vaadin/app-layout": "23.1.3",
       "@vaadin/avatar": "23.1.3",
@@ -235,6 +238,7 @@
       "apexcharts": "3.30.0",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.28.0",
+      "element-match-media": "0.0.3",
       "lit": "2.2.3",
       "onecolor": "3.1.0"
     },
@@ -261,7 +265,7 @@
       "workbox-precaching": "6.5.0",
       "workbox-webpack-plugin": "6.5.0"
     },
-    "hash": "bdcb6a957414b0b4c801bdc681ce911b66f8e1a0191c744f28b0f3d8024d125e"
+    "hash": "9fb86d30c0c33c6fbe682a99a31b52f21667014153f263f92ee7b189193e3052"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -368,6 +372,8 @@
     "@googlemaps/markerclusterer": "$@googlemaps/markerclusterer",
     "chokidar": "$chokidar",
     "apexcharts": "$apexcharts",
-    "onecolor": "$onecolor"
+    "onecolor": "$onecolor",
+    "@vaadin-component-factory/vcf-toggle-button": "$@vaadin-component-factory/vcf-toggle-button",
+    "element-match-media": "$element-match-media"
   }
 }

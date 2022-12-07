@@ -29,14 +29,16 @@ class MainLayout(@Autowired private val securityService: SecurityService, privat
 
     init {
         val logout = Button("Log out")
-        logout.width = "150px"
+        logout.width = "120px"
         logout.addClickListener { securityService.logout() }
+        logout.style.set("background","white")
         val toggle = DrawerToggle()
         val title = H1("Watch Data")
         title.style.set("font-size", "var(--lumo-font-size-l)")["margin"] = "0"
         title.setWidthFull()
-        addToNavbar(toggle,title,logout)
-        addToDrawer(getTabs())
+        //addToNavbar(toggle,title,logout)
+        addToDrawer(getTabs(),logout)
+        style.set("background","white")
 
     }
 
@@ -56,19 +58,7 @@ class MainLayout(@Autowired private val securityService: SecurityService, privat
         addToNavbar(header)
     }
 
-    private fun createDraw() {
-        if(webSecurityConfig.userDetailsServiceBean().loadUserByUsername(auth.name).authorities.toString() == "[ROLE_ADMIN]"){
-            val listLink = RouterLink("Watches Data", GridView::class.java)
-            listLink.highlightCondition = HighlightConditions.sameLocation()
-            addToDrawer(
-                VerticalLayout(
-                    listLink,
-                    RouterLink("Users", UserView::class.java),
 
-                )
-            )
-        }
-    }
 
     private fun getTabs(): Tabs {
         val tabs = Tabs()

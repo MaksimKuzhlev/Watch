@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import javax.persistence.*
 
 @Entity
-@Table(name = "watch")
+@Table(name = "Watch")
 @Component
 class WatchEntity (
     @Id

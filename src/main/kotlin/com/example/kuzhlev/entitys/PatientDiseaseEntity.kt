@@ -9,7 +9,7 @@ import javax.persistence.*
 class PatientDiseaseEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long,
+    var id:Long,
     var token:String,
     var stroke:Boolean,
     var tachycardia:Boolean,
